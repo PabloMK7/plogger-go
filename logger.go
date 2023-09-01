@@ -54,8 +54,8 @@ type Logger struct {
 	warningLogFile  *os.File
 	successLogFile  *os.File
 	infoLogFile     *os.File
-	logToStdOut     bool
-	logToFile       bool
+	LogToStdOut     bool
+	LogToFile       bool
 }
 
 func (logger *Logger) logLine(message, prefix, prefixColored string, logFile *os.File) {
@@ -68,7 +68,7 @@ func (logger *Logger) logLine(message, prefix, prefixColored string, logFile *os
 	logPlain := fmt.Sprintf(logTemplate+"\n", date, prefix, " ", "func "+function, packageName, file, line, message)
 	logPlainSpaced := fmt.Sprintf(logTemplate+"\n", date, prefix, spacing, "func "+function, packageName, file, line, message)
 
-	if logger.logToStdOut {	
+	if logger.LogToStdOut {	
 		if colorSupported {
 			fmt.Printf(logTemplate+"\n", grey(date), prefixColored, spacing, magenta("func ")+darkCyan(function), green(packageName), green(file), yellow(line), bold(message))
 		} else {
@@ -76,7 +76,7 @@ func (logger *Logger) logLine(message, prefix, prefixColored string, logFile *os
 		}
 	}
 	
-	if logger.logToFile {
+	if logger.LogToFile {
 		if _, err := logFile.WriteString(logPlain); err != nil {
 			log.Println(err)
 		}
@@ -150,8 +150,8 @@ func NewLogger(args ...string) *Logger {
 		warningLogFile:  createFileHandle(filepath.Join(logFolderPath, "warning.log")),
 		successLogFile:  createFileHandle(filepath.Join(logFolderPath, "success.log")),
 		infoLogFile:     createFileHandle(filepath.Join(logFolderPath, "info.log")),
-		logToStdOut:     true,
-		logToFile:       true,
+		LogToStdOut:     true,
+		LogToFile:       true,
 	}
 
 	return logger
